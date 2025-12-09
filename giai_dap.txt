@@ -1,0 +1,11 @@
+Nhung san pham bi loi co id la :
+ID 9803081 lỗi: 'NoneType' object is not iterable
+ID 7697454 lỗi: 'NoneType' object is not iterable
+ID 7697437 lỗi: 'NoneType' object is not iterable
+ID 7973548 lỗi: 'NoneType' object is not iterable
+ID 7697522 lỗi: 'NoneType' object is not iterable
+ID 7543425 lỗi: 'NoneType' object is not iterable
+ID 7470553 lỗi: 'NoneType' object is not iterable
+ID 9370172 lỗi: 'NoneType' object is not iterable
+Giai thich loi:
+Do ben gia tri cua truong images la null, cho nen khi ma chuyen no sang du lieu ben python de xu li, thi no chuyen thanh None, nen khi ma ta tham chieu den thi dc vi no la 1 dis, con khi ta duyet cac phan tu cua no thi bi loi iterable, boi gia tri ben trong cua no la None nen se ko co phan tu -> ko co chi muc-> ko duyet dc
