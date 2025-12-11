@@ -50,15 +50,31 @@ def fetch_product(idp):
         time.sleep(random.uniform(0.05,0.1))
         if response.status_code == 200:
             data = response.json()
+            raw_images = data.get("images")
+
+            # Nếu images không phải list → chuyển thành list rỗng
+            if not isinstance(raw_images, list):
+                raw_images = []
+            
+            images = [
+    {
+        "base_url": im.get("base_url"),
+        "large_url": im.get("large_url"),
+        "medium_url": im.get("medium_url"),
+        "small_url": im.get("small_url"),
+        "thumbnail_url": im.get("thumbnail_url"),
+    }
+    for im in raw_images
+    if isinstance(im, dict)
+]
             return {
                 "id": data.get("id"),
                 "name": data.get("name"),
                 "url_key": data.get("url_key"),
                 "price": data.get("price"),
                 "description": clean_description(data.get("description")),
-                "images": [im.get("url") for im in data.get("images", []) 
-                           if isinstance(im, dict) and im.get("url")]
-            }
+                "images":images
+                }
         else:
             print(f"ID {idp} lỗi status code: {response.status_code}")
             failed_ids.append(idp)
