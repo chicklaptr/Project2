@@ -6,6 +6,18 @@ import re
 import time
 import random
 from concurrent.futures import ThreadPoolExecutor
+import os   # thêm import để dùng checkpoint
+
+# ==== THÊM WEBHOOK DISCORD =====
+WEBHOOK_URL = "https://discordapp.com/api/webhooks/1448611371905454155/_tmm3JL_TwAyvvjw2JdXGoJ_GAGPUe6vRh-6NMPCX_wKLCtFcFhpMHMYPTAsciECtWnQ"
+
+def notify(msg):
+    try:
+        requests.post(WEBHOOK_URL, json={"content": msg})
+    except:
+        pass
+# =================================
+
 
 # Load list ID
 df = pd.read_csv("/home/tuananh/Project2/products-0-200000.csv")
@@ -13,26 +25,46 @@ idA = df["id"].tolist()
 
 # Kho chứa sản phẩm
 product = []
-failed_ids = []  # danh sách lưu ID lỗi
+failed_ids = []
 start = 0
 end = 1000
 MAX_THREADS = 30
 
-# Hàm chuẩn hóa description HTML -> text
+# ==== CHECKPOINT ====
+checkpoint = "/home/tuananh/Project2/file_json/checkpoint.txt"
+
+if os.path.exists(checkpoint):
+    with open(checkpoint) as f:
+        last = int(f.read().strip())
+
+    # Tính start – end dựa vào batch cũ
+    start = (last - 1) * 1000
+    end = start + 1000
+    begin_batch = last
+else:
+    begin_batch = 1
+# ==========================================
+
+
+# Hàm chuẩn hóa description
 def clean_description(html_text):
     if not html_text:
         return ""
     soup = BeautifulSoup(html_text, "html.parser")
+
     for li in soup.find_all("li"):
         li.insert_before("\n- ")
         li.unwrap()
+
     for tag in soup.find_all(["p","br","ul","ol"]):
         tag.insert_before("\n")
         tag.unwrap()
+
     text = soup.get_text()
     text = re.sub(r"\n\s*\n", "\n", text)
     text = text.strip()
     return text
+
 
 # Header và session
 headers = {
@@ -42,7 +74,8 @@ headers = {
 session = requests.Session()
 session.headers.update(headers)
 
-# Hàm lấy từng sản phẩm
+
+# Hàm fetch sản phẩm
 def fetch_product(idp):
     url = f"https://api.tiki.vn/product-detail/api/v1/products/{idp}"
     try:
@@ -52,62 +85,74 @@ def fetch_product(idp):
             data = response.json()
             raw_images = data.get("images")
 
-            # Nếu images không phải list → chuyển thành list rỗng
             if not isinstance(raw_images, list):
                 raw_images = []
-            
+
             images = [
-    {
-        "base_url": im.get("base_url"),
-        "large_url": im.get("large_url"),
-        "medium_url": im.get("medium_url"),
-        "small_url": im.get("small_url"),
-        "thumbnail_url": im.get("thumbnail_url"),
-    }
-    for im in raw_images
-    if isinstance(im, dict)
-]
+                {
+                    "base_url": im.get("base_url"),
+                    "large_url": im.get("large_url"),
+                    "medium_url": im.get("medium_url"),
+                    "small_url": im.get("small_url"),
+                    "thumbnail_url": im.get("thumbnail_url"),
+                }
+                for im in raw_images
+                if isinstance(im, dict)
+            ]
+
             return {
                 "id": data.get("id"),
                 "name": data.get("name"),
                 "url_key": data.get("url_key"),
                 "price": data.get("price"),
                 "description": clean_description(data.get("description")),
-                "images":images
-                }
+                "images": images
+            }
         else:
             print(f"ID {idp} lỗi status code: {response.status_code}")
             failed_ids.append(idp)
+
     except Exception as e:
         print(f"ID {idp} lỗi: {e}")
         failed_ids.append(idp)
+
     return None
 
-# Chạy lấy dữ liệu theo batch
 start_time = time.time()
-for i in range(1, 201):
+
+for i in range(begin_batch, 201):  # thay start_batch thành begin_batch
     batch_start = time.time()
     batch_id = idA[start:end]
-    
+
+    notify(f"Bắt đầu batch {i}")   # thêm gửi Discord
+
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
         results = list(executor.map(fetch_product, batch_id))
         product = [p for p in results if p]
-    
+
     # Lưu file JSON
     with open(f"/home/tuananh/Project2/file_json/product{i}.json", "w", encoding="utf-8") as f:
         json.dump(product, f, ensure_ascii=False, indent=2)
-    
+
+    # Ghi checkpoint 
+    with open(checkpoint, "w") as f:
+        f.write(str(i + 1))
+
     batch_end = time.time()
     print(f"File json thứ {i} — Thời gian: {batch_end - batch_start:.2f} giây")
-    
+
+    notify(f"Xong batch {i} — {batch_end - batch_start:.2f} giây")
+
     start = end
     end += 1000
     product = []
+
 
 # Lưu danh sách ID lỗi
 with open("/home/tuananh/Project2/file_json/failed_ids.json", "w", encoding="utf-8") as f:
     json.dump(failed_ids, f, ensure_ascii=False, indent=2)
 
 end_time = time.time()
+notify(f" Hoàn thành 200 batch — Tổng {end_time - start_time:.2f} giây")
 print(f"Tổng thời gian: {end_time - start_time:.2f} giây")
 
