@@ -1,1 +1,1 @@
-Những sản phẩm bị lỗi nằm trong file failed_ids.json còn lí do đa số là do mã trạng thái trả về là 404 ko tìm được sản phẩm theo id đó
+Khi crawl data về có thể dẫn đến trường hợp bị chặn do lỗi 404(không tìm thấy đường dẫn) và 429(gửi quá nhiều yêu cầu)-> cần giải pháp xử lí cải thiện thêm
