@@ -1,0 +1,49 @@
+import json
+import psycopg2
+from config import load_config
+
+
+def insert_data(cur, tupl):
+    sql = """
+    INSERT INTO tiki(id,name,url_key,price,description,images)
+    VALUES(%s,%s,%s,%s,%s,%s)
+    ON CONFLICT (id) DO NOTHING;
+    """
+    cur.execute(sql, tupl)
+
+
+if __name__ == '__main__':
+    config = load_config()
+    with psycopg2.connect(**config) as conn:
+        with conn.cursor() as cur:
+            for i in range(1, 201):
+                try:
+                    with open(f"/home/tuananh/Project2/file_json/product{i}.json","r",encoding="utf-8") as f:
+                        data = json.load(f)
+                    print("File:", i, "records:", len(data))
+                    for dis in data:
+                        tu = (
+                                dis.get("id"),
+                                dis.get("name"),
+                                dis.get("url_key"),
+                                dis.get("price"),
+                                dis.get("description"),
+                                json.dumps(dis.get("images"))
+                        )
+                        insert_data(cur, tu)
+                    conn.commit()
+                except FileNotFoundError:
+                    print(f"File{i} khong ton tai")
+                except PermissionError:
+                    print(f"File{i} khon co quyen doc")
+                except IsADirectoryError:
+                    print(f"Directory {i}, khong phai file")
+                except json.JSONDecodeError:
+                    print(f"FIle{i} loi cu phap Json")
+                except OSError as e:
+                    print(f"File{i} loi",e)
+                except Exception as e:
+                    conn.rollback()
+                    print(f"File{i} insert loi:",e)
+
+

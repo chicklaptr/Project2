@@ -397,3 +397,113 @@ python3: can't open file '/home/tuananh/Project2/crawl.py': [Errno 2] No such fi
 === START Thu Dec 11 04:38:32 PM +07 2025 ===
 python3: can't open file '/home/tuananh/Project2/crawl.py': [Errno 2] No such file or directory
 === SCRIPT CRASH / EXIT — RESTART SAU 5 GIÂY ===
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...
+Traceback (most recent call last):
+  File "/home/tuananh/Project2/problem.py", line 1, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+Python crashed or failed, retrying in 5 seconds...

@@ -120,10 +120,11 @@ def fetch_product(idp):
 
 start_time = time.time()
 
-for i in range(begin_batch, 201):  # thay start_batch thành begin_batch
+for i in range(begin_batch, 201):  
     batch_start = time.time()
     batch_id = idA[start:end]
 
+    print(f"Bắt đầu batch {i}")
     notify(f"Bắt đầu batch {i}")   # thêm gửi Discord
 
     with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
