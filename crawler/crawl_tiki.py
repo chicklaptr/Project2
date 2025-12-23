@@ -3,13 +3,19 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import re
+import argparse
 import time
 import random
 from concurrent.futures import ThreadPoolExecutor
 import os   # thêm import để dùng checkpoint
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # ==== THÊM WEBHOOK DISCORD =====
-WEBHOOK_URL = "https://discordapp.com/api/webhooks/1448611371905454155/_tmm3JL_TwAyvvjw2JdXGoJ_GAGPUe6vRh-6NMPCX_wKLCtFcFhpMHMYPTAsciECtWnQ"
+WEBHOOK_URL =os.getenv("DISCORD_WEBHOOK_URL")
+if not WEBHOOK_URL:
+    raise ValueError("Missing DISCORD_WEBHOOK_URL in .env")
 
 def notify(msg):
     try:
@@ -20,7 +26,14 @@ def notify(msg):
 
 
 # Load list ID
-df = pd.read_csv("/home/tuananh/Project2/products-0-200000.csv")
+parser=argparse.ArgumentParser()
+parser.add_argument(
+        "--input",
+        required=True,
+        help="Path to ID CSV file"
+)
+args=parser.parse_args()
+df = pd.read_csv(args.input)
 idA = df["id"].tolist()
 
 # Kho chứa sản phẩm
