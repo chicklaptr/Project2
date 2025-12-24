@@ -35,6 +35,13 @@ parser.add_argument(
 args=parser.parse_args()
 df = pd.read_csv(args.input)
 idA = df["id"].tolist()
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUTPUT_DIR = os.path.join(BASE_DIR, "data", "processed")
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+CHECKPOINT_DIR = os.path.join(BASE_DIR, "data", "checkpoints")
+os.makedirs(CHECKPOINT_DIR, exist_ok=True)
+CHECKPOINT_FILE = os.path.join(CHECKPOINT_DIR, "checkpoint.txt")
+ID_ERROR_FILE=os.path.join(OUTPUT_DIR,"failed_ids.json")
 
 # Kho chứa sản phẩm
 product = []
@@ -44,18 +51,17 @@ end = 1000
 MAX_THREADS = 30
 
 # ==== CHECKPOINT ====
-checkpoint = "/home/tuananh/Project2/file_json/checkpoint.txt"
 
-if os.path.exists(checkpoint):
-    with open(checkpoint) as f:
+if os.path.exists(CHECKPOINT_FILE):
+    with open(CHECKPOINT_FILE) as f:
         last = int(f.read().strip())
-
-    # Tính start – end dựa vào batch cũ
-    start = (last - 1) * 1000
-    end = start + 1000
-    begin_batch = last
 else:
-    begin_batch = 1
+    last=1
+BATCH_SIZE=1000
+#Tính start – end dựa vào batch cũ
+start = (last - 1) * BATCH_SIZE
+end = start + 1000
+begin_batch = last
 # ==========================================
 
 
@@ -86,8 +92,6 @@ headers = {
 }
 session = requests.Session()
 session.headers.update(headers)
-
-
 # Hàm fetch sản phẩm
 def fetch_product(idp):
     url = f"https://api.tiki.vn/product-detail/api/v1/products/{idp}"
@@ -133,7 +137,7 @@ def fetch_product(idp):
 
 start_time = time.time()
 
-for i in range(begin_batch, 201):  
+for i in range(begin_batch, 3):  
     batch_start = time.time()
     batch_id = idA[start:end]
 
@@ -145,11 +149,12 @@ for i in range(begin_batch, 201):
         product = [p for p in results if p]
 
     # Lưu file JSON
-    with open(f"/home/tuananh/Project2/file_json/product{i}.json", "w", encoding="utf-8") as f:
+    file_path = os.path.join(OUTPUT_DIR, f"product{i}.json")
+    with open(file_path, "w", encoding="utf-8") as f:
         json.dump(product, f, ensure_ascii=False, indent=2)
 
     # Ghi checkpoint 
-    with open(checkpoint, "w") as f:
+    with open(CHECKPOINT_FILE, "w") as f:
         f.write(str(i + 1))
 
     batch_end = time.time()
@@ -163,7 +168,7 @@ for i in range(begin_batch, 201):
 
 
 # Lưu danh sách ID lỗi
-with open("/home/tuananh/Project2/file_json/failed_ids.json", "w", encoding="utf-8") as f:
+with open(ID_ERROR_FILE, "w", encoding="utf-8") as f:
     json.dump(failed_ids, f, ensure_ascii=False, indent=2)
 
 end_time = time.time()
